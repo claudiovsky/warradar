@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <style>
+    @keyframes p1 {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(3.5); opacity: 0; }
+    }
+    @keyframes p2 {
+      0% { transform: scale(1); opacity: 0.4; }
+      100% { transform: scale(2.8); opacity: 0; }
+    }
+    @keyframes g {
+      0%, 100% { opacity: 0.85; }
+      50% { opacity: 1; }
+    }
+    .r1 { animation: p1 2s ease-out infinite; transform-origin: 16px 16px; }
+    .r2 { animation: p2 2s ease-out infinite 0.6s; transform-origin: 16px 16px; }
+    .c { animation: g 2s ease-in-out infinite; }
+  </style>
+  <circle class="r1" cx="16" cy="16" r="4" fill="none" stroke="#ef4444" stroke-width="2" opacity="0"/>
+  <circle class="r2" cx="16" cy="16" r="4" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0"/>
+  <g class="c">
+    <circle cx="16" cy="16" r="7" fill="#ef4444"/>
+    <circle cx="16" cy="16" r="4.5" fill="#fca5a5" opacity="0.4"/>
+    <circle cx="16" cy="16" r="2.5" fill="#fff" opacity="0.6"/>
+  </g>
+</svg>
