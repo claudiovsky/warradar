@@ -93,9 +93,9 @@ export async function analyzeArticles(articles: ScrapedArticle[]): Promise<AIAna
 
   console.log(`  📦 Processing ${articles.length} articles in ${chunks.length} chunk(s)...`);
 
-  // Process chunks in parallel pairs (2 concurrent) for speed
+  // Process chunks in parallel (4 concurrent) for speed with Vercel Pro limits
   const allZones: AIAnalysis[] = [];
-  const concurrency = 2;
+  const concurrency = 4;
   for (let i = 0; i < chunks.length; i += concurrency) {
     const batch = chunks.slice(i, i + concurrency);
     const results = await Promise.allSettled(

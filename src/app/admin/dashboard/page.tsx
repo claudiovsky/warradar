@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     try {
       const token = await user.getIdToken();
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 55000); // 55s client timeout
+      const timeoutId = setTimeout(() => controller.abort(), 290000); // 290s client timeout (Vercel Pro)
 
       const res = await fetch("/api/scrape", {
         method: "POST",

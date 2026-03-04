@@ -6,18 +6,18 @@ import { verifyAdmin } from "@/lib/auth";
 import type { ConflictZone, Source } from "@/types";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   try {
     const auth = await verifyAdmin(request.headers.get("authorization"));
     if (!auth.ok) return auth.response!;
 
-    // Race the pipeline against a 50s timeout (Vercel Hobby kills at 60s)
+    // Race the pipeline against a 280s timeout (Vercel Pro kills at 300s)
     const timeoutPromise = new Promise<NextResponse>((resolve) =>
       setTimeout(() => resolve(
         NextResponse.json({ error: "Scraping timed out. The pipeline took too long. Try again or check server logs." }, { status: 408 })
-      ), 50000)
+      ), 280000)
     );
 
     const pipelinePromise = runScrapePipeline();
@@ -55,8 +55,8 @@ async function runScrapePipeline(): Promise<NextResponse> {
 
     console.log(`📰 Found ${uniqueArticles.length} unique conflict articles (RSS: ${scrapedArticles.length}, NewsAPI: ${newsApiArticles.length}, GDELT: ${gdeltArticles.length})`);
 
-    // Cap articles to stay within serverless time limits (80 articles = 2 AI chunks, 1 parallel round)
-    const allArticlesDeduped = uniqueArticles.slice(0, 80);
+    // With Vercel Pro (300s limit), we can process more articles for better coverage
+    const allArticlesDeduped = uniqueArticles.slice(0, 200);
 
     if (allArticlesDeduped.length === 0) {
       return NextResponse.json({

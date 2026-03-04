@@ -5,7 +5,7 @@ import { analyzeArticles } from "@/lib/ai-analyzer";
 import type { ConflictZone, Source } from "@/types";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export async function GET(request: Request) {
   // Verify this is a legitimate Vercel cron call
@@ -35,8 +35,8 @@ export async function GET(request: Request) {
 
     console.log(`📰 Cron: ${uniqueArticles.length} unique articles (RSS: ${scrapedArticles.length}, NewsAPI: ${newsApiArticles.length}, GDELT: ${gdeltArticles.length})`);
 
-    // Cap articles to stay within serverless time limits
-    const cappedArticles = uniqueArticles.slice(0, 80);
+    // With Vercel Pro (300s limit), we can process more articles for better coverage
+    const cappedArticles = uniqueArticles.slice(0, 200);
 
     if (cappedArticles.length === 0) {
       return NextResponse.json({
